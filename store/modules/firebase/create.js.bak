@@ -1,0 +1,38 @@
+import firebase from 'firebase'
+
+export const createModule = {
+  namespaced: true,
+  state:
+  {
+    isCreated: false
+  },
+  getters:
+  {
+    isCreated: state => state.isCreated
+  },
+  actions:
+  {
+    /*
+    CREATE( { commit, state }, user ) 
+    {
+      return new Promise( ( resolve, reject ) => {  
+        firebase.auth().createUserWithEmailAndPassword( user.email, user.password )
+          .then( ( user ) => {
+            commit( 'SET_USER_CREATED' )
+            resolve( user )
+          })
+          .catch( ( err ) => {
+            reject( err )
+          })
+      })
+    }
+    */
+  },
+  mutations:
+  {
+    SET_USER_CREATED( state ) 
+    {
+      state.isCreated = !state.isCreated
+    }
+  }
+}

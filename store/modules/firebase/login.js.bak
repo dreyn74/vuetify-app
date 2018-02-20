@@ -1,0 +1,30 @@
+import firebase from 'firebase'
+
+export const loginModule = {
+  //namespaced: true,
+  state:
+  {
+      name: 'FireBaseLoginModule'
+  },
+  getters:
+  {
+    getName: state => state.name 
+  },
+  actions:
+  {
+    /*
+    FIREBASE_SIGN_IN( { commit, state }, { email, password } )
+    {
+      return new Promise( ( resolve, reject ) => {
+        firebase.auth().signInWithEmailAndPassword( email, password )
+          .then( ( user ) => {           
+            resolve( user )                          
+          })
+          .catch( ( err ) => {
+            reject( err )
+          })
+      })
+    }
+    */
+  }
+}
