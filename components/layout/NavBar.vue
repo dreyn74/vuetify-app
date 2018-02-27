@@ -1,87 +1,94 @@
 <template>
-  <v-toolbar app fixed clipped-left color="blue-grey">
-      <v-toolbar-side-icon class="hidden-sm-and-up" 
-        @click="toggleDrawer" style="color: white">
-      </v-toolbar-side-icon>
+  <div>
+    <v-navigation-drawer app floating dark fixed v-model="drawer" mobile-break-point="960">
+      <nav-drawer />
+    </v-navigation-drawer>  
 
-      <v-toolbar-title style="color:white">{{ title }}</v-toolbar-title>
+    <v-toolbar app fixed color="blue-grey">
+
+      <!--v-toolbar-side-icon class="hidden-md-and-up" @click="toggleDrawer" style="color: white" /-->
+      <v-toolbar-side-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" style="color: white" />
+
+      <v-toolbar-title style="color:white">{{ routerTitle }}</v-toolbar-title>    
     
-      <v-spacer></v-spacer>
+      <v-spacer />
+
+      <v-btn icon>
+        <v-icon style="color: white">search</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon style="color: white">more_vert</v-icon>
+      </v-btn>
       
-      <!--v-toolbar-items class="hidden-xs-only">
-        <ul class="toolbaritems">
-          <li v-if="!auth">
-            <router-link to="/login">Sign In</router-link>
-          </li>
+      <v-tabs centered color="cyan" slot="extension" v-model="tab" grow>
 
-          <li v-if="!auth">
-            <router-link to="/register">Sign Up</router-link>
-          </li>
+        <v-tabs-slider color="yellow" />   
 
-          <li v-if="auth">
-            <router-link to="/home">Home</router-link>
-          </li>
+        <v-tab id="tab-1" :to="{path:'/home'}" class="active">
+          <v-icon>home</v-icon>
+            Home
+        </v-tab>  
 
-          <li v-if="auth">
-            <router-link to="/contact">Contact</router-link>
-          </li>
+        <v-tab id="tab-2" :to="{path:'/about'}">        
+          <v-icon>info</v-icon>
+            About
+          </v-tab>
 
-          <li v-if="auth">
-            <router-link to="/about">About</router-link>
-          </li>
-
-          <li v-if="auth">
-            <button @click="onLogout" class="logout">Logout</button>
-          </li>
-        </ul>            
-      </v-toolbar-items-->
-      <v-tabs color="cyan" slot="extension" v-model="tab" grow>
-        <v-tabs-slider color="yellow"></v-tabs-slider>
-        <v-tab v-for="item in items" :key="item">
-          {{ item }}
+        <v-tab id="tab-3" :to="{path:'/contact'}">       
+          <v-icon>account_box</v-icon>
+            Contact
         </v-tab>
+
       </v-tabs>
-  </v-toolbar>
+    
+    </v-toolbar>
+
+  </div>
+
 </template>
 
 <script>
-import { store } from "@/store";
-
+import NavDrawer from "@/components/layout/NavDrawer";
+import store from "@/store";
 export default {
+  components: {
+    "nav-drawer": NavDrawer
+  },
   data() {
     return {
       drawer: null,
-      tab: null,
-      items: ["tab1", "tab2", "tab3"],
-      text:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras imperdiet sapien nisi, quis porta lacus ultricies ut. Integer justo arcu, auctor et porta quis, luctus in lorem. Sed accumsan ex vitae viverra vestibulum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin lectus dolor, dignissim eu nulla nec, imperdiet varius urna. Donec ac mollis turpis. Donec malesuada ac enim id tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dapibus ut leo in blandit. Duis eget rutrum erat, eu feugiat quam. Donec a lorem et eros varius vulputate sit amet ac risus. Nullam vulputate luctus massa eu condimentum. Curabitur eget tellus non neque imperdiet imperdiet sodales ac ipsum. In velit magna, euismod eu sodales et, lacinia ac mi. Mauris lectus sapien, eleifend id turpis nec, laoreet suscipit dui."
+      tab: "tab-1",
+      text: ""
     };
   },
+  props: ["tabName"],
   computed: {
     title() {
-      return this.$store.getters.getTitle;
+      return store.getters.getTitle;
     },
-
+    routerTitle() {
+      return this.$route.meta.name;
+    },
     auth() {
-      console.log(this.$store.getters.isAuthenticated);
-
-      return this.$store.getters.isAuthenticated;
+      console.log(store.getters.isAuthenticated);
+      return store.getters.isAuthenticated;
     }
   },
   methods: {
     onLogout: function() {
-      this.$store
+      store
         .dispatch("authModule/FIREBASE_SIGN_OUT")
         .then(() => {
-          this.$store.dispatch("SIGN_OUT_USER");
+          store.dispatch("SIGN_OUT_USER");
         })
         .then(() => {
           this.$router.replace("/login");
         });
     },
     toggleDrawer: function() {
-      console.log("NavBar -> toggleDrawer() ", this.$store.getters.getDrawer);
-      this.$store.dispatch("TOGGLE_DRAWER");
+      console.log("NavBar -> toggleDrawer() ", store.getters.getDrawer);
+      store.dispatch("TOGGLE_DRAWER");
     }
   }
 };

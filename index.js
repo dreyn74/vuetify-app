@@ -16,8 +16,6 @@ Vue.use(Element);
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
-//const unsubscribe = firebase.initializeApp(config.firebaseConfig).auth().onAuthStateChanged(() => {
-/* eslint-disable no-new */
 new Vue({
   el: "#app",
   store,
@@ -25,22 +23,17 @@ new Vue({
   template: "<App/>",
   components: { App },
   created() {
-    firebase.initializeApp(config);
+    firebase.initializeApp(config.firebaseConfig);
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.$store.state.user = firebase.auth().currentUser;
-        this.$router.push("/home");
+        this.$router.push("/hello");
       } else {
         this.$store.state.user = null;
-        if (this.$route.path !== "/login") {
+        if (this.$router.path !== "/login") {
           this.$router.push("/login");
         }
       }
     });
   }
 });
-
-// remove this listener so that we aren't trying to make new vue objects
-// every time the auth state changes.
-//unsubscribe();
-//});

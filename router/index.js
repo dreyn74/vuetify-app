@@ -3,37 +3,43 @@ import Router from "vue-router";
 import firebase from "firebase";
 
 import Home from "@/components/pages/Home";
-import Contact from "@/components/pages/Contact";
+import Main from "@/components/pages/Main";
 import About from "@/components/pages/About";
+import Contact from "@/components/pages/Contact";
 
 import Login from "@/components/auth/Login";
 import Register from "@/components/auth/Register";
-
+let errorPage = { template: `<div class="title">Page not found.</div>` };
 Vue.use(Router);
 
 let router = new Router({
   mode: "history",
   routes: [
     {
-      path: "/home",
-      icon: "home",
-      name: "Home",
-      component: Home,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: "/contact",
-      icon: "email",
-      name: "Contact",
-      component: Contact,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: "/about",
-      icon: "info",
-      name: "About",
-      component: About,
-      meta: { requiresAuth: true }
+      path: "/hello",
+      icon: "create",
+      component: Main,
+      meta: { requiresAuth: true, name: "Hello" },
+      children: [
+        {
+          path: "/home",
+          icon: "home",
+          component: Home,
+          meta: { requiresAuth: true, name: "Home" }
+        },
+        {
+          path: "/contact",
+          icon: "email",
+          component: Contact,
+          meta: { requiresAuth: true, name: "Contact" }
+        },
+        {
+          path: "/about",
+          icon: "info",
+          component: About,
+          meta: { requiresAuth: true, name: "About" }
+        }
+      ]
     },
     {
       path: "/register",
@@ -51,8 +57,9 @@ let router = new Router({
     },
     {
       path: "*",
-      name: "default",
-      redirect: "/login",
+      name: "errorPage",
+      //redirect: "/login",
+      component: errorPage,
       meta: { requiresAuth: false }
     }
   ]

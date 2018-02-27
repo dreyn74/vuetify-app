@@ -41,79 +41,68 @@
 </template>
 
 <script>
-  import {store} from '@/store'
+import store from "@/store";
 
-  export default 
-  {
-    mounted() 
-    {
-      this.title()
-    }, 
-    methods: 
-    {
-      title() 
-      {
-        this.$store.dispatch( 'CHANGE_APPLICATION_TITLE', "Home" )
-      }
-      , logout: function() 
-      {
-        this.$store.dispatch( 'authModule/FIREBASE_SIGN_OUT' )
-        .then( () =>
-        {
-          this.$store.dispatch( 'SIGN_OUT_USER' )
-        })      
-        .then( () => 
-        {
-          this.$router.replace( '/login' )
+export default {
+  mounted() {
+    this.title();
+  },
+  methods: {
+    title() {
+      store.dispatch("CHANGE_APPLICATION_TITLE", "Home");
+    },
+    logout: function() {
+      store
+        .dispatch("authModule/FIREBASE_SIGN_OUT")
+        .then(() => {
+          store.dispatch("SIGN_OUT_USER");
         })
-      }
-      , toggleDrawer: function()
-      {
-        console.log( 'page: home -> toggleDrawer() ', 
-          this.$store.getters.getDrawer )
-          
-        this.$store.dispatch( 'TOGGLE_DRAWER' )
-      },
-      open() 
-      {
-        const h = this.$createElement
+        .then(() => {
+          this.$router.replace("/login");
+        });
+    },
+    toggleDrawer: function() {
+      console.log("page: home -> toggleDrawer() ", store.getters.getDrawer);
 
-        this.$notify({
-          title: 'Title',
-          message: h('i', { style: 'color: teal' }, 'This is a reminder'),
-          showClose: false
-        })
-      }
+      store.dispatch("TOGGLE_DRAWER");
+    },
+    open() {
+      const h = this.$createElement;
+
+      this.$notify({
+        title: "Title",
+        message: h("i", { style: "color: teal" }, "This is a reminder"),
+        showClose: false
+      });
     }
-    , created: function() 
-    {      
-      if ( !this.$store.getters.getAuth )
-      {
-        this.$router.replace('/login')
-      }     
+  },
+  created: function() {
+    if (!store.getters.getAuth) {
+      this.$router.replace("/login");
     }
   }
+};
 </script>
 
 <style>
-  .text {
-    font-size: 14px;
-  }
+.text {
+  font-size: 14px;
+}
 
-  .item {
-    margin-bottom: 18px;
-  }
+.item {
+  margin-bottom: 18px;
+}
 
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-  .clearfix:after {
-    clear: both
-  }
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
 
-  .box-card {
-    width: 480px;
-  }
+.box-card {
+  width: 480px;
+}
 </style>

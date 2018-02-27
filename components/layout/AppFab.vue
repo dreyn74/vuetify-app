@@ -15,21 +15,19 @@
 </template>
 
 <script>
-  import {store} from "@/store"
-  export default {
-    methods: 
-    {
-      toggleDrawer: function() 
-      {
-        console.log( 'fab -> toggleDrawer() ', this.$store.getters.getDrawer )
-        this.$store.dispatch( 'TOGGLE_DRAWER' )
-      }
+import store from "@/store";
+export default {
+  methods: {
+    toggleDrawer: function() {
+      console.log("fab -> toggleDrawer() ", store.getters.getDrawer);
+      store.dispatch("TOGGLE_DRAWER");
     }
   }
+};
 </script>
 
 <style scoped>
-  .speed-dial {
+.speed-dial {
   top: 85vh !important;
 }
 </style>
